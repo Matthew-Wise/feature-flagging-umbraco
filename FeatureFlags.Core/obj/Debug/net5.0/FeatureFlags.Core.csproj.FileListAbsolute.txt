@@ -1,0 +1,12 @@
+D:\Projects\feature-flags\FeatureFlags.Core\bin\Debug\net5.0\FeatureFlags.Core.deps.json
+D:\Projects\feature-flags\FeatureFlags.Core\bin\Debug\net5.0\FeatureFlags.Core.dll
+D:\Projects\feature-flags\FeatureFlags.Core\bin\Debug\net5.0\ref\FeatureFlags.Core.dll
+D:\Projects\feature-flags\FeatureFlags.Core\bin\Debug\net5.0\FeatureFlags.Core.pdb
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.csproj.AssemblyReference.cache
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.AssemblyInfoInputs.cache
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.AssemblyInfo.cs
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.csproj.CoreCompileInputs.cache
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.dll
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\ref\FeatureFlags.Core.dll
+D:\Projects\feature-flags\FeatureFlags.Core\obj\Debug\net5.0\FeatureFlags.Core.pdb

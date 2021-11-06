@@ -1,0 +1,11 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Web.Common.PublishedModels.Content>
+@{
+    Layout = null;
+}
+
+
+<feature name="@nameof(Features.MyFirstFeature)">
+    <h1>Featured: @Model.Heading</h1>
+</feature>
+
+@Model.Heading
