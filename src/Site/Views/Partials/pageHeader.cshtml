@@ -6,7 +6,7 @@
     string mainImageUrl = Model.HasBackgroundImage ? Model.BackgroundImage.GetCropUrl(1903,628) : "/media/f01jqvmq/2.jpg";
 }
 
-<header class="masthead" @Html.Raw((await featureManager.IsEnabledAsync("MainImage")) ? $"style=\"background-image: url('{mainImageUrl}')\"" : null)>
+<header class="masthead" @Html.Raw((await featureManager.IsEnabledAsync(nameof(FeatureFlags.MainImage))) ? $"style=\"background-image: url('{mainImageUrl}')\"" : null)>
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
