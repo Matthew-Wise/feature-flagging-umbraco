@@ -1,21 +1,23 @@
 ﻿(function() {
     "use strict";
 
-    angular.module("umbraco").controller("FeatureFlagged.Controller",
-        function($scope) {
-            if ($scope.model.config.featureEnabled) {
-                $scope.$on("flaggedValueChanged",
-                    function(_, delta) {
-                        $scope.model.value = delta;
-                        console.log($scope.model.config);
-                    });
-            }
-        });
+    var eventName = "flaggedValueChanged";
+
+    function featureFlaggedController($scope, umbPropEditorHelper) {
+        if ($scope.model.config.featureEnabled) {
+            $scope.view = umbPropEditorHelper.getViewPath($scope.model.config.dataTypeSettings.view);
+            $scope.$on(eventName,
+                function(_, delta) {
+                    $scope.model.value = delta;
+                });
+        }
+    }
+    
+    angular.module("umbraco").controller("FeatureFlagged.Controller", featureFlaggedController);
 
     angular.module("umbraco.directives").directive("flaggedHider",
         function() {
             var link = function(scope, element) {
-                console.log(scope);
                 if (scope.hide === true) {
                     element.parents("umb-property").hide();
                 }
@@ -28,10 +30,8 @@
                     hide: "="
                 },
                 link: link
-                
             }
         });
-
 
     angular.module("umbraco.directives").directive("flaggedProperty",
         function () {
@@ -43,8 +43,7 @@
                 scope.model.validation = scope.validation;
                 
                 scope.$watch("model.value", function (newValue) {
-                    scope.$emit("flaggedValueChanged", newValue);
-                    console.log(newValue);
+                    scope.$emit(eventName, newValue);
                 }, true);
             };
 

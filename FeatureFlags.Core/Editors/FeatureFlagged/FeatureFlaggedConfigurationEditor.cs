@@ -1,52 +1,43 @@
 ﻿namespace FeatureFlags.Core.Editors.FeatureFlagged
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    
-    using Microsoft.FeatureManagement;
 
+    using Microsoft.FeatureManagement;
     using Umbraco.Cms.Core;
     using Umbraco.Cms.Core.IO;
     using Umbraco.Cms.Core.PropertyEditors;
-    using Umbraco.Cms.Core.PropertyEditors.Validators;
     using Umbraco.Cms.Core.Services;
 
-    internal sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<FeatureFlaggedConfiguration>
+    public sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<FeatureFlaggedConfiguration>
     {
-        private readonly ILocalizedTextService _localizedTextService;
+        private readonly IDataTypeService _dataTypeService;
 
         public FeatureFlaggedConfigurationEditor(
-            IIOHelper ioHelper,
             IFeatureManager featureManager,
-            ILocalizedTextService localizedTextService) : base(ioHelper)
+            IDataTypeService dataTypeService,
+            IIOHelper ioHelper) : base(ioHelper)
         {
-            _localizedTextService = localizedTextService;
-            CreateFeaturesSetting(featureManager).GetAwaiter().GetResult();
-            CreateRequirementSetting();
-            CreateDataTypePickerSetting();
+            _dataTypeService = dataTypeService;
+            Task.Run(async () => await ConfigureFeaturesField(featureManager)).GetAwaiter().GetResult();
+            ConfigureRequirementField();
+            ConfigureDataTypeField();
         }
 
-        private void CreateDataTypePickerSetting()
+        private void ConfigureDataTypeField()
         {
-            Fields.Add(new ConfigurationField
-                       {
-                           Key = nameof(FeatureFlaggedConfiguration.DataType),
-                           Name = "Data type",
-                           View = "treepicker",
-                           Description = "The data type to feature flag",
-                           Validators = { new RequiredValidator(_localizedTextService) },
-                           Config = new Dictionary<string, object>
+            Field(nameof(FeatureFlaggedConfiguration.DataType)).Config = new Dictionary<string, object>
                                     {
                                         {"multiPicker", false},
                                         {"entityType", "DataType"},
                                         {"type", Constants.Applications.Settings},
                                         {"treeAlias", Constants.Trees.DataTypes},
                                         {"idType", "id"}
-                                    }
-                       });
+                                    };
         }
 
-        private async Task CreateFeaturesSetting(IFeatureManager featureManager)
+        private async Task ConfigureFeaturesField(IFeatureManager featureManager)
         {
             var features = new List<object>();
             await foreach (var featureName in featureManager.GetFeatureNamesAsync())
@@ -54,36 +45,58 @@
                 features.Add(new { value = featureName, label = featureName });
             }
 
-            Fields.Add(new ConfigurationField
-            {
-                Key = nameof(FeatureFlaggedConfiguration.Features),
-                Name = "Features",
-                View = "checkboxlist",
-                PropertyType = typeof(List<string>),
-                Description = "Features which control if this editor should be rendered",
-                Validators = { new RequiredValidator(_localizedTextService) },
-                Config = new Dictionary<string, object> { { "prevalues", features } },
-                HideLabel = false
-            });
+            Field(nameof(FeatureFlaggedConfiguration.Features)).Config = new Dictionary<string, object> { { "prevalues", features } };
         }
 
-        private void CreateRequirementSetting()
+        private void ConfigureRequirementField()
         {
             var requirementOptions = new List<object>(2) {
              new { value = RequirementType.All, label = RequirementType.All.ToString() },
              new { value = RequirementType.Any, label = RequirementType.Any.ToString() }
             };
 
-            Fields.Add(new ConfigurationField
-            {
-                Key = nameof(FeatureFlaggedConfiguration.Requirement),
-                Name = "Requirement",
-                View = "radiobuttonlist",
-                Description = "Controls whether 'All' or 'Any' feature in a list of features should be enabled to render the editor",
-                Config = new Dictionary<string, object> { { "prevalues", requirementOptions } }
-            });
+            Field(nameof(FeatureFlaggedConfiguration.Requirement)).Config = new Dictionary<string, object> { { "prevalues", requirementOptions } };
+        }
 
-            DefaultConfiguration[nameof(FeatureFlaggedConfiguration.Requirement)] = RequirementType.All;
+        public override FeatureFlaggedConfiguration FromConfigurationEditor(IDictionary<string, object> editorValues, FeatureFlaggedConfiguration configuration)
+        {
+            foreach ((var key, var value) in editorValues)
+            {
+                switch (key)
+                {
+                    case nameof(FeatureFlaggedConfiguration.DataType):
+                        if (int.TryParse(value.ToString(), out var dataTypeId))
+                        {
+                            var dataType = _dataTypeService.GetDataType(dataTypeId);
+                            if (dataType != null)
+                            {
+                                editorValues[key] = dataType.Key.ToString();
+                                continue;
+                            }
+                        }
+
+                        throw new InvalidOperationException($"{nameof(FeatureFlaggedConfiguration.DataType)} is required");
+                    default:
+                        continue;
+                };
+            }
+            return base.FromConfigurationEditor(editorValues, configuration);
+        }
+
+
+        public override Dictionary<string, object> ToConfigurationEditor(FeatureFlaggedConfiguration configuration)
+        {
+            var updatedConfig = base.ToConfigurationEditor(configuration);
+            if (configuration.DataType != Guid.Empty)
+            {
+                updatedConfig[nameof(FeatureFlaggedConfiguration.DataType)] = _dataTypeService.GetDataType(configuration.DataType).Id.ToString();
+            }
+            else
+            {
+                updatedConfig[nameof(FeatureFlaggedConfiguration.DataType)] = null;
+            }
+
+            return updatedConfig;
         }
     }
 }

@@ -1,18 +1,15 @@
-using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.FeatureManagement;
-using Umbraco.Cms.Core.DependencyInjection;
-using Umbraco.Extensions;
-
 namespace FeatureFlags
 {
-    using FeatureFlags.Core.NotificationHandlers;
-
-    using Umbraco.Cms.Core.Notifications;
+    using System;
+    using FeatureFlags.Core.Extensions;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.FeatureManagement;
+    using Umbraco.Cms.Core.DependencyInjection;
+    using Umbraco.Extensions;
 
     public class Startup
     {
@@ -53,8 +50,7 @@ namespace FeatureFlags
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
-                .AddNotificationAsyncHandler<SendingContentNotification, FeatureContentSendingNotificationHandler>()
-                .AddNotificationAsyncHandler<ContentPublishingNotification, FeatureContentPublishingNotificationHandler>()
+                .AddFeatureFlagged()                
                 .Build();
 #pragma warning restore IDE0022 // Use expression body for methods
 

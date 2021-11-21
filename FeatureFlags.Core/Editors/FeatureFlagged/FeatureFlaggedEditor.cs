@@ -3,7 +3,6 @@
     using FeatureFlags.Core.Constants;
 
     using Microsoft.FeatureManagement;
-
     using Umbraco.Cms.Core.IO;
     using Umbraco.Cms.Core.PropertyEditors;
     using Umbraco.Cms.Core.Services;
@@ -19,24 +18,23 @@
     {
         private readonly IFeatureManager _featureManager;
         
-        private readonly ILocalizedTextService _localizedTextService;
-
-        private readonly IIOHelper _ioHelper;
+        private readonly IIOHelper _iOHelper;
+        private readonly IDataTypeService _dataTypeService;
 
         public FeatureFlaggedEditor(
             IDataValueEditorFactory dataValueEditorFactory,
-            IIOHelper ioHelper,
             IFeatureManager featureManager,
-            ILocalizedTextService localizedTextService,
+            IIOHelper iOHelper,
+            IDataTypeService dataTypeService,
             EditorType type = EditorType.PropertyValue)
             : base(dataValueEditorFactory, type)
         {
             _featureManager = featureManager;
-            _localizedTextService = localizedTextService;
-            _ioHelper = ioHelper;
+            _iOHelper = iOHelper;
+            _dataTypeService = dataTypeService;
         }
 
         protected override IConfigurationEditor CreateConfigurationEditor() 
-            => new FeatureFlaggedConfigurationEditor(_ioHelper, _featureManager, _localizedTextService);
+            => new FeatureFlaggedConfigurationEditor(_featureManager,_dataTypeService, _iOHelper);
     }
 }

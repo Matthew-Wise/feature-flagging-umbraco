@@ -22,10 +22,15 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 	/// <summary>Hero</summary>
 	public partial interface IHero : IPublishedContent
 	{
+		/// <summary>Feature text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.1+bef1ccedca45b16a1a51178c45c2bec3302caf53")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string FeatureText { get; }
+
 		/// <summary>Heading</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.1+bef1ccedca45b16a1a51178c45c2bec3302caf53")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string Heading { get; }
+		string NotFlagged { get; }
 	}
 
 	/// <summary>Hero</summary>
@@ -60,16 +65,29 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Feature text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.1+bef1ccedca45b16a1a51178c45c2bec3302caf53")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("featureText")]
+		public virtual string FeatureText => GetFeatureText(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Feature text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.1+bef1ccedca45b16a1a51178c45c2bec3302caf53")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetFeatureText(IHero that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "featureText");
+
+		///<summary>
 		/// Heading
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.1+bef1ccedca45b16a1a51178c45c2bec3302caf53")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("heading")]
-		public virtual string Heading => GetHeading(this, _publishedValueFallback);
+		[ImplementPropertyType("notFlagged")]
+		public virtual string NotFlagged => GetNotFlagged(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Heading</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.1+bef1ccedca45b16a1a51178c45c2bec3302caf53")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetHeading(IHero that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "heading");
+		public static string GetNotFlagged(IHero that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "notFlagged");
 	}
 }

@@ -13,6 +13,7 @@
     
     using Umbraco.Cms.Core.Events;
     using Umbraco.Cms.Core.Notifications;
+    using Umbraco.Cms.Core.PropertyEditors;
     using Umbraco.Cms.Core.Services;
     using Umbraco.Extensions;
 
@@ -36,7 +37,7 @@
                 foreach(var prop in entity.Properties.Where(p => p.PropertyType.PropertyEditorAlias == DataTypes.FeatureFlagged.Alias))
                 {
                     var dataType = _dataTypeService.GetDataType(prop.PropertyType.DataTypeId);
-                    var config = dataType.Configuration as FeatureFlaggedConfiguration;
+                    var config = ConfigurationEditor.ConfigurationAs<FeatureFlaggedConfiguration>(dataType.Configuration);
 
                     var enabled = config.Requirement switch
                     {
