@@ -100,7 +100,7 @@ namespace Our.FeatureFlags.Editor.Configuration
             }
             else {
                 var dataType = _dataTypeService.GetDataType(configuration.DataType);
-                config[nameof(FeatureFlaggedConfiguration.DataType)] = GuidUdi.Create(Umbraco.Cms.Core.Constants.UdiEntityType.DataType, dataType.Key).ToString();
+                config[nameof(FeatureFlaggedConfiguration.DataType)] = Udi.Create(Constants.UdiEntityType.DataType, dataType.Key).ToString();
             }
 
             return config;
