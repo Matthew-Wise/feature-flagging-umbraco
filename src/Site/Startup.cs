@@ -40,7 +40,7 @@ namespace FeatureFlags.Site
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddFeatureManagement(); //TODO: Document this is required and point to MSDN Docs
+            services.AddFeatureManagement();
 
             services.AddUmbraco(_env, _config)
                 .AddBackOffice()

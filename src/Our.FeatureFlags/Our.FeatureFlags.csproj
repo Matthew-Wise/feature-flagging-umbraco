@@ -3,14 +3,16 @@
         <TargetFramework>net5.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
         <Product>Our.FeatureFlags</Product>
-        <PackageId>Our.FeatureFlags</PackageId>
         <Title>Our.FeatureFlags</Title>
-        <Description>...</Description>
-        <Product>...</Product>
-        <PackageTags>umbraco plugin package</PackageTags>
+        <Description>Enables the use of Feature managment with Umbraco properties</Description>        
+        <PackageTags>Umbraco</PackageTags>
         <RootNamespace>Our.FeatureFlags</RootNamespace>
-        <Authors>MattWise</Authors>
+        <Authors>Matthew Wise</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageId>Our.FeatureFlags</PackageId>
+		<RepositoryUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco</PackageProjectUrl>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,6 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
+		<None Include="..\..\Readme.md" Pack="true" PackagePath="\"/>
+		
         <Content Include="App_Plugins\Our.FeatureFlags\**\*.*">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
