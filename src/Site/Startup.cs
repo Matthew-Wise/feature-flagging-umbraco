@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.FeatureFilters;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
 
@@ -40,7 +41,15 @@ namespace FeatureFlags.Site
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddFeatureManagement();
+            services.AddFeatureManagement()
+                .AddFeatureFilter<PercentageFilter>()
+                .AddFeatureFilter<TimeWindowFilter>()
+                .AddFeatureFilter<TargetingFilter>();
+
+            if (_env.IsProduction())
+            {
+                services.AddAzureAppConfiguration();
+            }
 
             services.AddUmbraco(_env, _config)
                 .AddBackOffice()
@@ -60,6 +69,11 @@ namespace FeatureFlags.Site
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            if (env.IsProduction())
+            {
+                app.UseAzureAppConfiguration();
             }
 
             app.UseUmbraco()
