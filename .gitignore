@@ -456,3 +456,5 @@ $RECYCLE.BIN/
 /src/Site/App_Plugins/Our.FeatureFlags/featureFlags.js
 /src/Site/App_Plugins/Our.FeatureFlags/package.manifest
 /src/Site/App_Plugins/Our.FeatureFlags/editor.html
+/src/Site/App_Plugins/Our.Umbraco.FeatureFlags
+/src/Site/App_Plugins/Our.FeatureFlags

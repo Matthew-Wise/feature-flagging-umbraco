@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Microsoft.FeatureManagement;
 
-namespace Our.Umbraco.FeatureFlags.Extensions
+namespace Our.FeatureFlags.Extensions
 {
     public static class FeatureManagerExtensions
     {

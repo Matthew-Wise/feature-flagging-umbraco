@@ -1,0 +1,27 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <OurFeatureFlagsContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\Our.FeatureFlags\**\*.*</OurFeatureFlagsContentFilesPath>
+    </PropertyGroup>
+
+    <Target Name="CopyOurFeatureFlagsAssets" BeforeTargets="Build">
+        <ItemGroup>
+            <OurFeatureFlagsContentFiles Include="$(OurFeatureFlagsContentFilesPath)" />
+        </ItemGroup>
+        <Message Text="Copying Our.FeatureFlags files: $(OurFeatureFlagsContentFilesPath) - #@(OurFeatureFlagsContentFiles->Count()) files"  Importance="high" />
+        <Copy
+            SourceFiles="@(OurFeatureFlagsContentFiles)"
+            DestinationFiles="@(OurFeatureFlagsContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\Our.FeatureFlags\%(RecursiveDir)%(Filename)%(Extension)')"
+            SkipUnchangedFiles="true" />
+
+    </Target>
+
+    <Target Name="ClearOurFeatureFlagsAssets" BeforeTargets="Clean">
+        <ItemGroup>
+            <OurFeatureFlagsDir Include="$(MSBuildProjectDirectory)\App_Plugins\Our.FeatureFlags\" />
+        </ItemGroup>
+        <Message Text="Clear old Our.FeatureFlags data"  Importance="high" />
+        <RemoveDir Directories="@(OurFeatureFlagsDir)"  />
+    </Target>
+
+</Project>

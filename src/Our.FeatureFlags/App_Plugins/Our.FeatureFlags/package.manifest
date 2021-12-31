@@ -1,0 +1,3 @@
+{
+  "javascript": [ "~/App_Plugins/Our.FeatureFlags/featureFlags.js" ]
+}

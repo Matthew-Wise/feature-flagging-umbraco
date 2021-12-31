@@ -5,12 +5,15 @@
         <Product>Our.FeatureFlags</Product>
         <PackageId>Our.FeatureFlags</PackageId>
         <Title>Our.FeatureFlags</Title>
-        <Description>...</Description>
-        <Product>...</Product>
+        <Description>Enables the use of feature flags to show/hide Umbraco properties</Description>
         <PackageTags>umbraco plugin package</PackageTags>
         <RootNamespace>Our.FeatureFlags</RootNamespace>
-        <Authors>MattWise</Authors>
+        <Authors>Matthew Wise</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco</PackageProjectUrl>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,5 +31,12 @@
             <Pack>True</Pack>
             <PackagePath>buildTransitive</PackagePath>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\Readme.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 </Project>

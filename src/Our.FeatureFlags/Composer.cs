@@ -1,8 +1,8 @@
-﻿using Our.Umbraco.FeatureFlags.Extensions;
+﻿using Our.FeatureFlags.Extensions;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 
-namespace Our.Umbraco.FeatureFlags
+namespace Our.FeatureFlags
 {
     internal class Composer : IComposer
     {

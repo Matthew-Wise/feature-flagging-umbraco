@@ -1,8 +1,8 @@
-﻿using Our.Umbraco.FeatureFlags.NotificationHandlers;
+﻿using Our.FeatureFlags.NotificationHandlers;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
 
-namespace Our.Umbraco.FeatureFlags.Extensions
+namespace Our.FeatureFlags.Extensions
 {
     public static class UmbracoBuilderExtensions
     {

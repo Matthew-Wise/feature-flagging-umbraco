@@ -8,7 +8,7 @@ using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.Umbraco.FeatureFlags.Editor.Configuration
+namespace Our.FeatureFlags.Editor.Configuration
 {
     public sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<FeatureFlaggedConfiguration>
     {
