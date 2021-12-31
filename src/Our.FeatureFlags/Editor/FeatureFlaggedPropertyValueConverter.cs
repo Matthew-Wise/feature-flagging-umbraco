@@ -1,8 +1,9 @@
-﻿using Microsoft.FeatureManagement;
-using Our.FeatureFlags.Editor.Configuration;
-using Our.FeatureFlags.Extensions;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+
+using Microsoft.FeatureManagement;
+using Our.Umbraco.FeatureFlags.Extensions;
+using Our.Umbraco.FeatureFlags.Editor.Configuration;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
@@ -10,7 +11,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Extensions;
 
-namespace Our.FeatureFlags.Editor
+namespace Our.Umbraco.FeatureFlags.Editor
 {
     public class FeatureFlaggedPropertyValueConverter : PropertyValueConverterBase
     {

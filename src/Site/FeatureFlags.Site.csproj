@@ -15,10 +15,10 @@
         <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2" />
     </ItemGroup>
 
-    <Import Project="..\Our.FeatureFlags\build\Our.FeatureFlags.targets" />
+    <Import Project="..\Our.FeatureFlags\build\Our.Umbraco.FeatureFlags.targets" />
 
     <ItemGroup>
-        <ProjectReference Include="..\Our.FeatureFlags\Our.FeatureFlags.csproj" />
+        <ProjectReference Include="..\Our.FeatureFlags\Our.Umbraco.FeatureFlags.csproj" />
     </ItemGroup>
 
     <PropertyGroup>

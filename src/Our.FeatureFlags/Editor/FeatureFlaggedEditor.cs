@@ -1,15 +1,15 @@
 ﻿using Microsoft.FeatureManagement;
-using Our.FeatureFlags.Editor.Configuration;
+using Our.Umbraco.FeatureFlags.Editor.Configuration;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.FeatureFlags.Editor
+namespace Our.Umbraco.FeatureFlags.Editor
 {
     [DataEditor(
         alias: AliasValue,
         name: "Feature Flagged",
-        view: "~/App_Plugins/Our.FeatureFlags/editor.html",
+        view: "~/App_Plugins/Our.Umbraco.FeatureFlags/editor.html",
         ValueType = ValueTypes.Json,
         Group = "Rich Content",
         Icon = "icon-code")]

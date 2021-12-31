@@ -7,9 +7,8 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Extensions;
 
-namespace Our.FeatureFlags.Editor.Configuration
+namespace Our.Umbraco.FeatureFlags.Editor.Configuration
 {
     public sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<FeatureFlaggedConfiguration>
     {
@@ -71,9 +70,9 @@ namespace Our.FeatureFlags.Editor.Configuration
                             var dataType = _dataTypeService.GetDataType(dataTypeId);
                             if (dataType != null)
                             {
-                                editorValues[key] = dataType.Key.ToString();                                
+                                editorValues[key] = dataType.Key.ToString();
                             }
-                        }                        
+                        }
                         else if (UdiParser.TryParse<GuidUdi>(value.ToString(), out var udi))
                         {
                             editorValues[key] = udi.Guid;
@@ -94,11 +93,12 @@ namespace Our.FeatureFlags.Editor.Configuration
         {
             var config = base.ToConfigurationEditor(configuration);
 
-            if(configuration.DataType == Guid.Empty)
+            if (configuration.DataType == Guid.Empty)
             {
                 config[nameof(FeatureFlaggedConfiguration.DataType)] = null;
             }
-            else {
+            else
+            {
                 var dataType = _dataTypeService.GetDataType(configuration.DataType);
                 config[nameof(FeatureFlaggedConfiguration.DataType)] = Udi.Create(Constants.UdiEntityType.DataType, dataType.Key).ToString();
             }

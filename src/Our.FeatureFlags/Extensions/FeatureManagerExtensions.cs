@@ -1,10 +1,10 @@
-﻿namespace Our.FeatureFlags.Extensions
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Microsoft.FeatureManagement;
+
+namespace Our.Umbraco.FeatureFlags.Extensions
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Microsoft.FeatureManagement;
-
     public static class FeatureManagerExtensions
     {
         public static async Task<IList<string>> GetEnabledFeatures(this IFeatureManager featureManager)

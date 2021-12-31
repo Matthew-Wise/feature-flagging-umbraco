@@ -1,27 +1,25 @@
-﻿namespace Our.FeatureFlags.NotificationHandlers
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.FeatureManagement;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using Our.Umbraco.FeatureFlags.Extensions;
+using Our.Umbraco.FeatureFlags.Editor;
+using Our.Umbraco.FeatureFlags.Editor.Configuration;
+using Umbraco.Cms.Core.Events;
+using Umbraco.Cms.Core.Models.ContentEditing;
+using Umbraco.Cms.Core.Notifications;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Extensions;
+
+namespace Our.Umbraco.FeatureFlags.NotificationHandlers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Microsoft.FeatureManagement;
-
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Serialization;
-    using Our.FeatureFlags.Editor;
-    using Our.FeatureFlags.Editor.Configuration;
-    using Our.FeatureFlags.Extensions;
-    using Umbraco.Cms.Core;
-    using Umbraco.Cms.Core.Events;
-    using Umbraco.Cms.Core.Models;
-    using Umbraco.Cms.Core.Models.ContentEditing;
-    using Umbraco.Cms.Core.Notifications;
-    using Umbraco.Cms.Core.Services;
-    using Umbraco.Extensions;
-
     public class FeatureContentSendingNotificationHandler : INotificationAsyncHandler<SendingContentNotification>
     {
         private readonly IFeatureManager _featureManager;

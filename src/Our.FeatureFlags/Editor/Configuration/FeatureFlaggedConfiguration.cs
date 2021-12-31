@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.FeatureManagement;
 using Umbraco.Cms.Core.PropertyEditors;
 
-namespace Our.FeatureFlags.Editor.Configuration
+namespace Our.Umbraco.FeatureFlags.Editor.Configuration
 {
     public class FeatureFlaggedConfiguration
     {
