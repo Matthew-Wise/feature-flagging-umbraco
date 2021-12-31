@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <Product>Our.FeatureFlags</Product>
+        <PackageId>Our.FeatureFlags</PackageId>
+        <Title>Our.FeatureFlags</Title>
+        <Description>...</Description>
+        <Product>...</Product>
+        <PackageTags>umbraco plugin package</PackageTags>
+        <RootNamespace>Our.FeatureFlags</RootNamespace>
+        <Authors>MattWise</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.4.0" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.1.0" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="App_Plugins\Our.FeatureFlags\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </Content>
+        <None Include="build\**\*.*">
+            <Pack>True</Pack>
+            <PackagePath>buildTransitive</PackagePath>
+        </None>
+    </ItemGroup>
+</Project>
