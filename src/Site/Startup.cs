@@ -1,8 +1,10 @@
 using System;
+using FeatureFlags.Site.TargetingContextAccessors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.FeatureFilters;
@@ -13,6 +15,7 @@ namespace FeatureFlags.Site
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
 
@@ -41,21 +44,21 @@ namespace FeatureFlags.Site
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddFeatureManagement()
-                .AddFeatureFilter<PercentageFilter>()
-                .AddFeatureFilter<TimeWindowFilter>()
-                .AddFeatureFilter<TargetingFilter>();
+            
+            services.AddFeatureManagement();
+                //.AddFeatureFilter<PercentageFilter>()
+                //.AddFeatureFilter<TimeWindowFilter>()
+                //.AddFeatureFilter<TargetingFilter>();
 
-            if (_env.IsProduction())
-            {
-                services.AddAzureAppConfiguration();
-            }
+            services.AddAzureAppConfiguration();
+
 
             services.AddUmbraco(_env, _config)
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
                 .Build();
+
 
         }
 
@@ -66,16 +69,14 @@ namespace FeatureFlags.Site
         /// <param name="env">The web hosting environment.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
-            }
-
-            if (env.IsProduction())
-            {
+            //}
+            
                 app.UseAzureAppConfiguration();
-            }
-
+            
+            
             app.UseUmbraco()
                 .WithMiddleware(u =>
                 {

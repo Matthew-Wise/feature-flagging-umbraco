@@ -9,11 +9,12 @@
         <PackageTags>umbraco plugin package</PackageTags>
         <RootNamespace>Our.FeatureFlags</RootNamespace>
         <Authors>Matthew Wise</Authors>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco.git</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco</PackageProjectUrl>
-		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+		    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+		    <RepositoryType>git</RepositoryType>
+		    <RepositoryUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco.git</RepositoryUrl>
+		    <PackageProjectUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco</PackageProjectUrl>
+		    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+      <IsPublishable>false</IsPublishable>
     </PropertyGroup>
 
     <ItemGroup>

@@ -19,17 +19,15 @@ namespace FeatureFlags.Site
                     .ConfigureLogging(x => x.ClearProviders())
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
-                        //Not a fan of the magic string here not sure if it can be another way.
-                        if (Environments.Production == Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
-                        {
-                            webBuilder.ConfigureAppConfiguration(config =>
-                            {
-                                var settings = config.Build();
-                                config.AddAzureAppConfiguration(options => options.Connect(settings["ConnectionStrings:AppConfig"])
-                                .UseFeatureFlags(featureFlagOptions => featureFlagOptions.CacheExpirationInterval = TimeSpan.FromMinutes(5)));
+                        webBuilder.ConfigureAppConfiguration(config =>
+                         {
+                             var settings = config.Build();
+                             var conn = settings.GetConnectionString("AppConfig");
+                             config.AddAzureAppConfiguration(options => options.Connect(conn)
+                             .UseFeatureFlags(featureFlagOptions => featureFlagOptions.CacheExpirationInterval = TimeSpan.FromSeconds(5)));
 
-                            });
-                        }
+                         });
+
                         webBuilder.UseStartup<Startup>();
                     });
         }
