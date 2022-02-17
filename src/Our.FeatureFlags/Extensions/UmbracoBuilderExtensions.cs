@@ -9,8 +9,10 @@ namespace Our.FeatureFlags.Extensions
         public static IUmbracoBuilder AddOurFeatureFlags(this IUmbracoBuilder builder)
         {
             //Umbraco's helper method checks to see if NotificationAsyncHandler is already registered if so skips it.
-            builder.AddNotificationAsyncHandler<SendingContentNotification, FeatureContentSendingNotificationHandler>()
-            .AddNotificationAsyncHandler<ContentPublishingNotification, FeatureContentPublishingNotificationHandler>();
+            builder
+                .AddNotificationAsyncHandler<SendingContentNotification, FeatureContentSendingNotificationHandler>()
+                .AddNotificationAsyncHandler<ContentPublishingNotification, FeatureContentPublishingNotificationHandler>();
+
             return builder;
         }
     }
