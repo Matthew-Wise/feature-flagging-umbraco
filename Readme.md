@@ -8,7 +8,7 @@ These properties can still be mandatory and have validation.
 
 Follow the install step(s) for [Microsoft.FeatureManagement](https://docs.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core?tabs=core5x).
 
-The pacakage will register its dependencies using a Composer so no additional configurationg is needed.
+The package will register its dependencies using a Composer so no additional configuration is needed.
 
 
 # Using
@@ -20,7 +20,7 @@ Properties work with Models builder as if there were not feature flagged.
 # Known Issues and work arounds
 
 ## HasValue check
-Uses the base property value converter method of checking this, as I am unable to get the correct coverter on this request. 
+Uses the base property value converter method of checking this, as I am unable to get the correct converter on this request. 
 
 I would suggest never using HasValue and instead null check etc the strongly type value.
 
