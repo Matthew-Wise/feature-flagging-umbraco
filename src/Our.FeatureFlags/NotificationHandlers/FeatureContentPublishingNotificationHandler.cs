@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.FeatureManagement;
-using Our.FeatureFlags.Extensions;
 using Our.FeatureFlags.Editor;
 using Our.FeatureFlags.Editor.Configuration;
+using Our.FeatureFlags.Extensions;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.PropertyEditors;
@@ -26,14 +24,20 @@ namespace Our.FeatureFlags.NotificationHandlers
             _featureManager = featureManager;
             _dataTypeService = dataTypeService;
         }
+
         public async Task HandleAsync(ContentPublishingNotification notification, CancellationToken cancellationToken)
         {
             var enabledFeatures = await _featureManager.GetEnabledFeatures();
 
             foreach (var entity in notification.PublishedEntities)
             {
-                foreach (var prop in entity.Properties.Where(p => p.PropertyType.PropertyEditorAlias == FeatureFlaggedEditor.AliasValue))
+                foreach (var prop in entity.Properties)
                 {
+                    if (prop.PropertyType.Mandatory == true || prop.PropertyType.PropertyEditorAlias.InvariantEquals(FeatureFlaggedEditor.AliasValue) == false)
+                    {
+                        continue;
+                    }
+
                     var dataType = _dataTypeService.GetDataType(prop.PropertyType.DataTypeId);
                     var config = ConfigurationEditor.ConfigurationAs<FeatureFlaggedConfiguration>(dataType.Configuration);
 
@@ -43,11 +47,11 @@ namespace Our.FeatureFlags.NotificationHandlers
                         RequirementType.All => enabledFeatures.ContainsAll(config.Features),
                         _ => throw new InvalidOperationException($"Configured requirement ({config.Requirement}) had no matching {nameof(RequirementType)} "),
                     };
-                    if (!enabled)
+
+                    if (enabled == false)
                     {
                         prop.PropertyType.Mandatory = false;
                     }
-
                 }
             }
         }

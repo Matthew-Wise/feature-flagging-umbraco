@@ -1,3 +1,4 @@
 {
-  "javascript": [ "~/App_Plugins/Our.FeatureFlags/featureFlags.js" ]
+  "name": "Our.FeatureFlags",
+  "version": "1.1.0"
 }
