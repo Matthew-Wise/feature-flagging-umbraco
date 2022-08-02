@@ -1,16 +1,15 @@
-﻿using Our.FeatureFlags.Extensions;
+﻿namespace Our.FeatureFlags;
+
+using Our.FeatureFlags.Extensions;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 
-namespace Our.FeatureFlags
+internal class Composer : IComposer
 {
-    internal class Composer : IComposer
+    public void Compose(IUmbracoBuilder builder)
     {
-        public void Compose(IUmbracoBuilder builder)
-        {
-            builder.AddOurFeatureFlags();
+        builder.AddOurFeatureFlags();
 
-            builder.ManifestFilters().Append<FeatureFlagsManifestFilter>();
-        }
+        builder.ManifestFilters().Append<FeatureFlagsManifestFilter>();
     }
 }

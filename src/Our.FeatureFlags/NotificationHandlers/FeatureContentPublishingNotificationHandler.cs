@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace Our.FeatureFlags.NotificationHandlers;
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.FeatureManagement;
@@ -11,47 +13,44 @@ using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
 
-namespace Our.FeatureFlags.NotificationHandlers
+public class FeatureContentPublishingNotificationHandler : INotificationAsyncHandler<ContentPublishingNotification>
 {
-    public class FeatureContentPublishingNotificationHandler : INotificationAsyncHandler<ContentPublishingNotification>
+    private readonly IFeatureManager _featureManager;
+
+    private readonly IDataTypeService _dataTypeService;
+
+    public FeatureContentPublishingNotificationHandler(IFeatureManager featureManager, IDataTypeService dataTypeService)
     {
-        private readonly IFeatureManager _featureManager;
+        _featureManager = featureManager;
+        _dataTypeService = dataTypeService;
+    }
 
-        private readonly IDataTypeService _dataTypeService;
+    public async Task HandleAsync(ContentPublishingNotification notification, CancellationToken cancellationToken)
+    {
+        var enabledFeatures = await _featureManager.GetEnabledFeatures();
 
-        public FeatureContentPublishingNotificationHandler(IFeatureManager featureManager, IDataTypeService dataTypeService)
+        foreach (var entity in notification.PublishedEntities)
         {
-            _featureManager = featureManager;
-            _dataTypeService = dataTypeService;
-        }
-
-        public async Task HandleAsync(ContentPublishingNotification notification, CancellationToken cancellationToken)
-        {
-            var enabledFeatures = await _featureManager.GetEnabledFeatures();
-
-            foreach (var entity in notification.PublishedEntities)
+            foreach (var prop in entity.Properties)
             {
-                foreach (var prop in entity.Properties)
+                if (prop.PropertyType.Mandatory == true || prop.PropertyType.PropertyEditorAlias.InvariantEquals(FeatureFlaggedEditor.AliasValue) == false)
                 {
-                    if (prop.PropertyType.Mandatory == true || prop.PropertyType.PropertyEditorAlias.InvariantEquals(FeatureFlaggedEditor.AliasValue) == false)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var dataType = _dataTypeService.GetDataType(prop.PropertyType.DataTypeId);
-                    var config = ConfigurationEditor.ConfigurationAs<FeatureFlaggedConfiguration>(dataType.Configuration);
+                var dataType = _dataTypeService.GetDataType(prop.PropertyType.DataTypeId);
+                var config = ConfigurationEditor.ConfigurationAs<FeatureFlaggedConfiguration>(dataType?.Configuration);
 
-                    var enabled = config.Requirement switch
-                    {
-                        RequirementType.Any => enabledFeatures.ContainsAny(config.Features),
-                        RequirementType.All => enabledFeatures.ContainsAll(config.Features),
-                        _ => throw new InvalidOperationException($"Configured requirement ({config.Requirement}) had no matching {nameof(RequirementType)} "),
-                    };
+                var enabled = config?.Requirement switch
+                {
+                    RequirementType.Any => enabledFeatures.ContainsAny(config.Features),
+                    RequirementType.All => enabledFeatures.ContainsAll(config.Features),
+                    _ => throw new InvalidOperationException($"Configured requirement for property ({prop.PropertyType.Alias}) had no matching {nameof(RequirementType)} "),
+                };
 
-                    if (enabled == false)
-                    {
-                        prop.PropertyType.Mandatory = false;
-                    }
+                if (enabled == false)
+                {
+                    prop.PropertyType.Mandatory = false;
                 }
             }
         }
