@@ -23,8 +23,3 @@ Properties work with Models builder as if there were not feature flagged.
 Uses the base property value converter method of checking this, as I am unable to get the correct converter on this request. 
 
 I would suggest never using HasValue and instead null check etc the strongly type value.
-
-## Nested content
-You can not flag a nested content property, this is due to how nested content updates its model based on the form submitting.
-
-I would recommend moving the the block list instead.

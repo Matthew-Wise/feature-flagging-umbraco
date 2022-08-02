@@ -21,9 +21,10 @@ namespace Our.FeatureFlags.Editor.Configuration
             IDataTypeService dataTypeService,
             IFeatureManager featureManager,
             IIOHelper ioHelper,
+            IEditorConfigurationParser editorConfigurationParser,
             PropertyEditorCollection propertyEditors,
             IShortStringHelper shortStringHelper)
-            : base(ioHelper)
+            : base(ioHelper, editorConfigurationParser)
         {
             _dataTypeService = dataTypeService;
             _propertyEditors = propertyEditors;

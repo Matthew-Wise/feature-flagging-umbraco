@@ -18,6 +18,7 @@ namespace Our.FeatureFlags.Editor
         private readonly IDataTypeService _dataTypeService;
         private readonly IFeatureManager _featureManager;
         private readonly IIOHelper _ioHelper;
+        private readonly IEditorConfigurationParser _editorConfigurationParser;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly ILocalizedTextService _localizedTextService;
         private readonly PropertyEditorCollection _propertyEditors;
@@ -27,6 +28,7 @@ namespace Our.FeatureFlags.Editor
             IDataTypeService dataTypeService,
             IFeatureManager featureManager,
             IIOHelper ioHelper,
+            IEditorConfigurationParser editorConfigurationParser,
             IJsonSerializer jsonSerializer,
             ILocalizedTextService localizedTextService,
             PropertyEditorCollection propertyEditors,
@@ -35,10 +37,11 @@ namespace Our.FeatureFlags.Editor
             _dataTypeService = dataTypeService;
             _featureManager = featureManager;
             _ioHelper = ioHelper;
+            _editorConfigurationParser = editorConfigurationParser;
             _jsonSerializer = jsonSerializer;
             _localizedTextService = localizedTextService;
             _propertyEditors = propertyEditors;
-            _shortStringHelper = shortStringHelper;
+            _shortStringHelper = shortStringHelper;            
         }
 
         public string Alias => AliasValue;
@@ -61,6 +64,7 @@ namespace Our.FeatureFlags.Editor
             _dataTypeService,
             _featureManager,
             _ioHelper,
+            _editorConfigurationParser,
             _propertyEditors,
             _shortStringHelper);
 

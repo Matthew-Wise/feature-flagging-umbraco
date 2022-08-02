@@ -9,6 +9,8 @@ namespace Our.FeatureFlags
         public void Compose(IUmbracoBuilder builder)
         {
             builder.AddOurFeatureFlags();
+
+            builder.ManifestFilters().Append<FeatureFlagsManifestFilter>();
         }
     }
 }
