@@ -82,13 +82,15 @@ public class FeatureFlaggedEditor : IDataEditor
 
     public IDataValueEditor GetValueEditor(object? configuration)
     {
-        if (configuration is FeatureFlaggedConfiguration config)
+	    if (configuration is not FeatureFlaggedConfiguration config)
+	    {
+		    return GetValueEditor();
+	    }
+
+	    var dataType = _dataTypeService.GetDataType(config.DataType);
+        if (dataType != null && _propertyEditors.TryGet(dataType.EditorAlias, out var dataEditor))
         {
-            var dataType = _dataTypeService.GetDataType(config.DataType);
-            if (dataType != null && _propertyEditors.TryGet(dataType.EditorAlias, out var dataEditor) == true)
-            {
-                return dataEditor.GetValueEditor(dataType.Configuration);
-            }
+	        return dataEditor.GetValueEditor(dataType.Configuration);
         }
 
         return GetValueEditor();

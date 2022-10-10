@@ -8,27 +8,25 @@ using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
 using System.Security.Claims;
 using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Security;
 using Umbraco.Extensions;
 
-public class UmbracoBackOfficeUserFilter : IFeatureFilter
+public sealed class UmbracoBackOfficeUserFilter : IFeatureFilter
 {
-    protected readonly IHttpContextAccessor HttpContextAccessor;
+	private readonly IHttpContextAccessor _httpContextAccessor;
 
-    private readonly IServiceProvider serviceProvider;
+	//TODO:  Can we use the service provider in the http context?
+    private readonly IServiceProvider _serviceProvider;
 
     public UmbracoBackOfficeUserFilter(IHttpContextAccessor httpContextAccessor, IServiceProvider serviceProvider)
     {
-        HttpContextAccessor = httpContextAccessor;
-        this.serviceProvider = serviceProvider;
+        _httpContextAccessor = httpContextAccessor;
+        this._serviceProvider = serviceProvider;
     }
 
     public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
     {
         // We are a singleton but we need scoped information
-        using var scope = serviceProvider.CreateScope();
-
-        var backOfficeSecurity = scope.ServiceProvider.GetService<IBackOfficeSecurity>();
+        using IServiceScope scope = _serviceProvider.CreateScope();
 
         var settings = context.Parameters.Get<UmbracoBackOfficeUserFilterSettings>();
         var backOfficeUser = BackofficeUser(scope.ServiceProvider.GetService<IOptionsSnapshot<CookieAuthenticationOptions>>());
@@ -41,7 +39,7 @@ public class UmbracoBackOfficeUserFilter : IFeatureFilter
         var email = backOfficeUser.GetEmail();
         var groups = backOfficeUser.GetRoles();
 
-        if (string.IsNullOrWhiteSpace(email) || groups?.Any() != true)
+        if (string.IsNullOrWhiteSpace(email) || groups.Any() != true)
         {
             return Task.FromResult(false);
         }
@@ -61,7 +59,7 @@ public class UmbracoBackOfficeUserFilter : IFeatureFilter
     /// </summary>
     private ClaimsIdentity? BackofficeUser(IOptionsSnapshot<CookieAuthenticationOptions>? cookieOptionsSnapshot)
     {
-        var httpContext = HttpContextAccessor.HttpContext;
+        var httpContext = _httpContextAccessor.HttpContext;
 
         if (httpContext == null || cookieOptionsSnapshot == null)
         {

@@ -33,7 +33,7 @@ public class FeatureContentPublishingNotificationHandler : INotificationAsyncHan
         {
             foreach (var prop in entity.Properties)
             {
-                if (prop.PropertyType.Mandatory == true || prop.PropertyType.PropertyEditorAlias.InvariantEquals(FeatureFlaggedEditor.AliasValue) == false)
+                if (prop.PropertyType.PropertyEditorAlias.InvariantEquals(FeatureFlaggedEditor.AliasValue) == false)
                 {
                     continue;
                 }
@@ -50,6 +50,7 @@ public class FeatureContentPublishingNotificationHandler : INotificationAsyncHan
 
                 if (enabled == false)
                 {
+	                prop.PropertyType.ValidationRegExp = null;
                     prop.PropertyType.Mandatory = false;
                 }
             }

@@ -2,7 +2,7 @@
 
 using Microsoft.FeatureManagement;
 
-public class MatchCondition
+internal sealed class MatchCondition
 {
 
     /// <inheritdoc cref="RequirementType"/>

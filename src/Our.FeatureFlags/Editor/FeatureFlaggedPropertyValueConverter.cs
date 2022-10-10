@@ -31,11 +31,11 @@ public class FeatureFlaggedPropertyValueConverter : PropertyValueConverterBase
     public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
     {
         var innerProperty = GetInnerPropertyType(propertyType, out var config);
-        var enablebledFeatures = Task.Run(async () => await _featureManager.GetEnabledFeatures()).GetAwaiter().GetResult();
+        var enabledFeatures = Task.Run(async () => await _featureManager.GetEnabledFeatures()).GetAwaiter().GetResult();
         var propertyEnabled = config?.Requirement switch
         {
-            RequirementType.All => enablebledFeatures.ContainsAll(config.Features),
-            RequirementType.Any => enablebledFeatures.ContainsAny(config.Features),
+            RequirementType.All => enabledFeatures.ContainsAll(config.Features),
+            RequirementType.Any => enabledFeatures.ContainsAny(config.Features),
             _ => throw new InvalidOperationException($"RequirementType for property {propertyType.Alias} was not handled"),
         };
 

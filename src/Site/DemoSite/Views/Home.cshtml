@@ -1,8 +1,15 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@inject IFeatureManager FeatureManager
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Microsoft.FeatureManagement
 @{
 	Layout = null;
 }
 
 @Model.FeatureString
+
+@if (await FeatureManager.IsEnabledAsync("EnOnly"))
+{
+	<h1>EN!</h1>
+}
+

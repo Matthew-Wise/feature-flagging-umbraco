@@ -72,7 +72,7 @@ public sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<Feat
     {
         if (editorValues != null)
         {
-            foreach ((var key, var value) in editorValues)
+            foreach ((string key, object? value) in editorValues)
             {
                 switch (key)
                 {
@@ -98,7 +98,7 @@ public sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<Feat
 
                     default:
                         continue;
-                };
+                }
             }
         }
 
@@ -132,22 +132,24 @@ public sealed class FeatureFlaggedConfigurationEditor : ConfigurationEditor<Feat
 
     public override IDictionary<string, object> ToValueEditor(object? configuration)
     {
-        if (configuration is FeatureFlaggedConfiguration config)
-        {
-            var dataType = _dataTypeService.GetDataType(config.DataType);
-            if (dataType != null && _propertyEditors.TryGet(dataType.EditorAlias, out var dataEditor) == true)
-            {
-                var config2 = dataEditor.GetConfigurationEditor().ToValueEditor(dataType.Configuration);
-                if (config2 != null)
-                {
-                    if (config2.ContainsKey("__ffconfig") == false)
-                    {
-                        config2.Add("__ffconfig", config);
-                    }
+	    if (configuration is not FeatureFlaggedConfiguration config)
+	    {
+		    return base.ToValueEditor(configuration);
+	    }
 
-                    return config2;
-                }
-            }
+	    var dataType = _dataTypeService.GetDataType(config.DataType);
+        if (dataType != null && _propertyEditors.TryGet(dataType.EditorAlias, out var dataEditor))
+        {
+	        var config2 = dataEditor.GetConfigurationEditor().ToValueEditor(dataType.Configuration);
+	        if (config2 != null)
+	        {
+		        if (config2.ContainsKey("__ffconfig") == false)
+		        {
+			        config2.Add("__ffconfig", config);
+		        }
+
+		        return config2;
+	        }
         }
 
         return base.ToValueEditor(configuration);

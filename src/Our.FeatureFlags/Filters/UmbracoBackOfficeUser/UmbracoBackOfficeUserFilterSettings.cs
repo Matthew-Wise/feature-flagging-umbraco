@@ -2,7 +2,7 @@
 
 using Microsoft.FeatureManagement;
 
-public class UmbracoBackOfficeUserFilterSettings
+internal sealed class UmbracoBackOfficeUserFilterSettings
 {
     /// <inheritdoc cref="RequirementType"/>
     public RequirementType Match { get; set; } = RequirementType.Any;
@@ -10,10 +10,10 @@ public class UmbracoBackOfficeUserFilterSettings
     /// <summary>
     /// Groups to check the user had to enable the flag
     /// </summary>
-    public MatchCondition Groups { get; set; } = new MatchCondition();
+    public MatchCondition Groups { get; set; } = new();
 
     /// <summary>
     /// Email addresses to check the user had to enable the flag
     /// </summary>
-    public MatchCondition EmailAddresses { get; set; } = new MatchCondition();
+    public MatchCondition EmailAddresses { get; set; } = new();
 }
