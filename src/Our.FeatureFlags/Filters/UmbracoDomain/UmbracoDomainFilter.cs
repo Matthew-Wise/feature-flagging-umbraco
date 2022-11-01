@@ -34,7 +34,7 @@ public sealed class UmbracoDomainFilter : IFeatureFilter
 			return Task.FromResult(false);
 		}
 		
-		using var umbracoContext = serviceProvider
+		var umbracoContext = serviceProvider
 			.GetRequiredService<IUmbracoContextAccessor>().GetRequiredUmbracoContext();
 
 		if (umbracoContext.IsFrontEndUmbracoRequest() != true)

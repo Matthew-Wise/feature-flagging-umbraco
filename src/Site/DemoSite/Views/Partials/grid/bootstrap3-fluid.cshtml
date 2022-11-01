@@ -1,4 +1,5 @@
 @using System.Web
+@using Microsoft.AspNetCore.Html
 @using Newtonsoft.Json.Linq
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<dynamic>
 
@@ -6,7 +7,7 @@
     Razor helpers located at the bottom of this file
 *@
 
-@if (Model is JObject && Model?.sections is not null)
+@if (Model != null && Model.GetType() == typeof(JObject) && Model.sections != null)
 {
     var oneColumn = ((System.Collections.ICollection)Model.sections).Count == 1;
 
@@ -54,7 +55,7 @@
                         <div @RenderElementAttributes(area)>
                             @foreach (var control in area.controls)
                             {
-                                if (control?.editor?.view != null)
+                                if (control != null && control.editor != null && control.editor.view != null)
                                 {
                                     <text>@await Html.PartialAsync("grid/editors/base", (object)control)</text>
                                 }

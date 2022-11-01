@@ -26,7 +26,7 @@ public class FeatureFlaggedPropertyValueConverter : PropertyValueConverterBase
     }
 
     public override bool IsConverter(IPublishedPropertyType propertyType)
-        => propertyType.EditorAlias == FeatureFlaggedEditor.AliasValue;
+        => propertyType.EditorAlias.InvariantEquals(FeatureFlaggedEditor.AliasValue);
 
     public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
     {
@@ -52,7 +52,7 @@ public class FeatureFlaggedPropertyValueConverter : PropertyValueConverterBase
         => GetInnerPropertyType(propertyType, out _).CacheLevel;
 
     public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
-        => GetInnerPropertyType(propertyType, out _).ClrType ?? throw new NullReferenceException("Published Property Type has no c# type");
+        => GetInnerPropertyType(propertyType, out _).ModelClrType;
 
     private IPublishedPropertyType GetInnerPropertyType(IPublishedPropertyType propertyType, out FeatureFlaggedConfiguration? config)
     {

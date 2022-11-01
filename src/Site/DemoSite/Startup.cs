@@ -1,7 +1,14 @@
 namespace DemoSite;
+
+using DemoSite.Controllers.Search;
+using DemoSite.Services;
+using Examine;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using Our.FeatureFlags.Filters.UmbracoBackOfficeUser;
 using Our.FeatureFlags.Filters.UmbracoDomain;
+using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.PublishedCache;
 
 public class Startup
 {
@@ -37,12 +44,15 @@ public class Startup
 			.AddBackOffice()
 			.AddWebsite()
 			.AddComposers()
-			.Build();
-
+			.Build();		
 
 		services.AddFeatureManagement()
 			.AddFeatureFilter<UmbracoBackOfficeUserFilter>()
 			.AddFeatureFilter<UmbracoDomainFilter>();
+
+		
+		
+		services.AddScoped<ISearchServiceFactory, SearchServiceFactory>();
 	}
 
 	/// <summary>
@@ -55,7 +65,7 @@ public class Startup
 		if (env.IsDevelopment())
 		{
 			app.UseDeveloperExceptionPage();
-		}
+		}		
 
 		app.UseHttpsRedirection();
 

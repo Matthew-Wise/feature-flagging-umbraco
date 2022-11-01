@@ -1,0 +1,10 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Article>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+
+@{ Layout = "master.cshtml"; }
+
+@(await Component.InvokeAsync<PageHeaderComponent>(Model))
+
+<article>
+    @Html.GetGridHtml(Model, "mainContent", "Clean")
+</article>

@@ -1,15 +1,18 @@
-﻿@inject IFeatureManager FeatureManager
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-@using Microsoft.FeatureManagement
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+
 @{
-	Layout = null;
+    Layout = "master.cshtml";
 }
 
-@Model.FeatureString
+@(await Component.InvokeAsync<PageHeaderComponent>(Model))
 
-@if (await FeatureManager.IsEnabledAsync("EnOnly"))
+
+@if (Model.MainContent != null)
 {
-	<h1>EN!</h1>
+<article>
+    @Html.GetGridHtml(Model, "mainContent", "Clean")
+</article>
 }
 
+@await Html.PartialAsync("~/Views/Partials/latestArticles.cshtml")
