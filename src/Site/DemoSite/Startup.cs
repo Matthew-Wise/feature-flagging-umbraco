@@ -1,5 +1,6 @@
 namespace DemoSite;
 
+using Backoffice;
 using DemoSite.Controllers.Search;
 using DemoSite.Services;
 using Examine;
@@ -12,6 +13,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.PublishedCache;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Umbraco.Cms.Core.Notifications;
 
 public class Startup
 {
@@ -51,6 +53,7 @@ public class Startup
 			.AddBackOffice()
 			.AddWebsite()
 			.AddComposers()
+			.AddNotificationHandler<SendingAllowedChildrenNotification, MenuRenderingNotificationHandler>()
 			.Build();		
 
 		services.AddFeatureManagement()

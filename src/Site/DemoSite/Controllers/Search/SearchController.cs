@@ -6,6 +6,7 @@ using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement.Mvc;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
@@ -24,7 +25,7 @@ public class SearchController : RenderController
 		_searchServiceFactory = searchServiceFactory;
 		_publishedValueFallback = publishedValueFallback;
 	}
-
+	
 	public async Task<IActionResult> Search()
 	{
 		if(CurrentPage == null)
