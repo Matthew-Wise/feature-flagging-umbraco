@@ -9,6 +9,7 @@ using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 
+[FilterAlias("UmbracoDomain")]
 public sealed class UmbracoDomainFilter : IFeatureFilter
 {
 	private IHttpContextAccessor HttpContextAccessor { get; }
@@ -21,6 +22,7 @@ public sealed class UmbracoDomainFilter : IFeatureFilter
 
 	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
 	{
+		
 		var settings = context.Parameters.Get<UmbracoDomainFilterSettings>();
 
 		if (settings?.Domains.Any() != true)
@@ -49,9 +51,19 @@ public sealed class UmbracoDomainFilter : IFeatureFilter
 			return Task.FromResult(false);
 		}
 
-		List<Domain>? domains = umbracoContext.Domains?.GetAssigned(content.Id, true).ToList();
-		if (domains?.Any() != true)
+		List<Domain>? domains = new();
+		var path = content.Path.Split(',', StringSplitOptions.RemoveEmptyEntries).Reverse();
+		foreach (var id in path.Select(int.Parse))
 		{
+			domains = umbracoContext.Domains?.GetAssigned(id, true).ToList();
+			if (domains?.Any() == true)
+			{
+				break;
+			}
+		}
+
+		if (domains?.Any() != true)
+		{			
 			return Task.FromResult(false);
 		}
 
@@ -69,6 +81,6 @@ public sealed class UmbracoDomainFilter : IFeatureFilter
 			return Task.FromResult(false);
 		}
 		
-		return Task.FromResult(settings.Domains.Contains(currentDomain.Uri));
+		return Task.FromResult(settings.Domains.Contains(currentDomain.Name));
 	}
 }

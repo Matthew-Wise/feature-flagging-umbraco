@@ -12,4 +12,5 @@ public class SearchViewModel : PublishedContentWrapped
 
 	public ISearchResults? Results { get; internal set; }
 	public StringValues SearchQuery { get; internal set; }
+	public string SearchServiceName { get; set; }
 }

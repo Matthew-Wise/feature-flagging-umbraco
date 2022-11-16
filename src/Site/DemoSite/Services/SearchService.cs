@@ -15,7 +15,14 @@ public sealed class SearchService : ISearchService
 
 	public ISearchResults GetSearchResults(string searchTerm)
 	{
-		var results = publishedContentQuery.Search(searchTerm, 0, 10, out var totalRecords, CultureInfo.CurrentUICulture.Name, Constants.UmbracoIndexes.ExternalIndexName);
+		if (string.IsNullOrWhiteSpace(searchTerm))
+		{
+			return new SearchResults();
+		}
+		
+		var results = publishedContentQuery
+			.Search(searchTerm, 0, 10, out long totalRecords, 
+				CultureInfo.CurrentUICulture.Name);
 		return new SearchResults
 		{
 			TotalRecords = totalRecords,

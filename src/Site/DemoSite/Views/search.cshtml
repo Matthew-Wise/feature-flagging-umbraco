@@ -2,14 +2,12 @@
 
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @using DemoSite.Models.ViewModels;
-@using DemoSite.Services;
-@inject ISearchService searchService
-@inject IFeatureManager featureManager
+@inject IFeatureManager FeatureManager
 
 @{
     Layout = "master.cshtml";
     
-    var showImages = await featureManager.IsEnabledAsync("SearchImages");
+    var showImages = await FeatureManager.IsEnabledAsync(Features.SearchImages);
     if (showImages)
     {
         SmidgeHelper.RequiresCss("~/clean-assets/css/search-images.css");
@@ -31,26 +29,27 @@
                 </div>
             </div>
             <div class="col-lg-8 col-md-10 mx-auto">
-                <h2>@(searchService.GetType().FullName)</h2>
+                
                 @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
                 {
-                    @Html.Raw(string.Format(Umbraco.GetDictionaryValue("Search.Results"), Model.Results?.TotalRecords ?? 0, Model.SearchQuery))
-                    if (Model.Results?.TotalRecords > 0 && Model.Results?.Content != null)
+                    @Html.Raw(string.Format(Umbraco.GetDictionaryValue("Search.Results", "We found {0} results when searching for {1}")!, Model.Results?.TotalRecords ?? 0, Model.SearchQuery))
+                    <p>Searched using: @Model.SearchServiceName</p>
+                    if (Model.Results is { TotalRecords: > 0, Content: { } })
                     {
                         foreach (var result in Model.Results.Content)
                         {
                             <div class="post-preview @(showImages ? "with-images" : null)">
-
-                                @if (showImages)
-                                {
-                                    var image = result.Content.Value<Image>("mainImage");
-                                    if (image != null)
-                                    {
-                                        <a href="@result.Content.Url()">
-                                            <img src="@image.GetCropUrl(150,150)" />
-                                        </a>
+                                <feature requirement="Any" name="@nameof(Features.SearchImages)">
+                                    @{
+                                        var image = result.Content.Value<Image>("mainImage");
+                                        if (image != null)
+                                        {
+                                            <a href="@result.Content.Url()">
+                                                <img src="@image.GetCropUrl(150, 150)" alt=""/>
+                                            </a>
+                                        }
                                     }
-                                }
+                                </feature>
                                 <div>
                                     <a href="@result.Content.Url()">
 
@@ -63,7 +62,7 @@
                                         }
                                     </a>
                                     @if (result.Content.HasProperty("authorName") && result.Content.HasValue("authorName") && !string.IsNullOrWhiteSpace(result.Content.Value<string>("authorName"))
-                                   || (result.Content.HasProperty("articleDate") && result.Content.HasValue("articleDate") && result.Content.Value<DateTime>("articleDate") > DateTime.MinValue))
+                                         || (result.Content.HasProperty("articleDate") && result.Content.HasValue("articleDate") && result.Content.Value<DateTime>("articleDate") > DateTime.MinValue))
                                     {
                                         <p class="post-meta">
                                             @Umbraco.GetDictionaryValue("Article.Posted")

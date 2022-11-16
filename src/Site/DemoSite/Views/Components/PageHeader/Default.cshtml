@@ -1,5 +1,6 @@
-﻿@inherits UmbracoViewPage<PageHeaderViewModel>
-
+﻿@using Our.FeatureFlags.Extensions
+@inherits UmbracoViewPage<PageHeaderViewModel>
+@inject IFeatureManager FeatureManager
 @{
     string mainImageUrl = Model.HasBackgroundImage ? Model.BackgroundImage.GetCropUrl(1903, 628) : "/media/f01jqvmq/2.jpg";
 }
@@ -39,4 +40,11 @@
             </div>
         </div>
     </div>
+
 </header>
+<div>
+    @{
+        var features = await FeatureManager.GetEnabledFeatures();
+        <p >Enabled Features: @string.Join(",", features)</p>
+    }
+</div>

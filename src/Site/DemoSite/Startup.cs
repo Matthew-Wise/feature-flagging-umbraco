@@ -5,10 +5,13 @@ using DemoSite.Services;
 using Examine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.FeatureFilters;
 using Our.FeatureFlags.Filters.UmbracoBackOfficeUser;
 using Our.FeatureFlags.Filters.UmbracoDomain;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.PublishedCache;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
 public class Startup
 {
@@ -39,6 +42,10 @@ public class Startup
 	/// </remarks>
 	public void ConfigureServices(IServiceCollection services)
 	{
+		if (!_env.IsDevelopment())
+		{
+			services.AddAzureAppConfiguration();
+		}
 
 		services.AddUmbraco(_env, _config)
 			.AddBackOffice()
@@ -50,8 +57,9 @@ public class Startup
 			.AddFeatureFilter<UmbracoBackOfficeUserFilter>()
 			.AddFeatureFilter<UmbracoDomainFilter>();
 
-		
-		
+
+		services.AddScoped<ArticleSearchService>();
+		services.AddScoped<SearchService>();
 		services.AddScoped<ISearchServiceFactory, SearchServiceFactory>();
 	}
 
@@ -65,7 +73,11 @@ public class Startup
 		if (env.IsDevelopment())
 		{
 			app.UseDeveloperExceptionPage();
-		}		
+		}
+		else
+		{
+			app.UseAzureAppConfiguration();
+		}
 
 		app.UseHttpsRedirection();
 

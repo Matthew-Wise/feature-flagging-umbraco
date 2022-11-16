@@ -38,6 +38,7 @@ public class SearchController : RenderController
 
 		var model = new SearchViewModel(CurrentPage, _publishedValueFallback)
 		{
+			SearchServiceName = searchService.GetType().Name,
 			Results = results,
 			SearchQuery = searchQuery
 		};
