@@ -8,34 +8,36 @@ env:
       BUILD_CONFIG: 'Release'
       SOLUTION: './src/Our.FeatureFlags/Our.FeatureFlags.csproj'
 
-jobs: 
+jobs:
+
   build:
       runs-on: ubuntu-latest
 
-    steps:
+      steps:
       - name: Get tag
+        id: tag
         uses: dawidd6/action-get-tag@v1.1.0
-        strip_v: true
+        with:
+          strip_v: true
                 
       - name: Checkout
         uses: actions/checkout@v3    
 
       - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
-      with:
-        nuget-version: '6.x'
+        uses: NuGet/setup-nuget@v1
+        with:
+          nuget-version: '6.x'
         
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.x
 
-    - name: Restore dependencies
-      run: nuget restore $SOLUTION
+      - name: Restore dependencies
+        run: nuget restore $SOLUTION
 
-    - name: Build
-      run: dotnet build $SOLUTION --configuration $BUILD_CONFIG -p:Version=${{steps.tag.outputs.tag}} --no-restore
-
+      - name: Build
+        run: dotnet build $SOLUTION --configuration $BUILD_CONFIG -p:Version=${{steps.tag.outputs.tag}} --no-restore
       
       - name: Push package to NuGet
         run: dotnet nuget push **\*.nupkg
