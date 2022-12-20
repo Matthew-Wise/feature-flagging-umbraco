@@ -1,0 +1,43 @@
+name: Build and Package
+on:
+  push:    
+    tags:
+      - "v*.*"
+
+env:
+      BUILD_CONFIG: 'Release'
+      SOLUTION: './src/Our.FeatureFlags/Our.FeatureFlags.csproj'
+
+jobs: 
+  build:
+      runs-on: ubuntu-latest
+
+    steps:
+      - name: Get tag
+        uses: dawidd6/action-get-tag@v1.1.0
+        strip_v: true
+                
+      - name: Checkout
+        uses: actions/checkout@v3    
+
+      - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      with:
+        nuget-version: '6.x'
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.x
+
+    - name: Restore dependencies
+      run: nuget restore $SOLUTION
+
+    - name: Build
+      run: dotnet build $SOLUTION --configuration $BUILD_CONFIG -p:Version=${{steps.tag.outputs.tag}} --no-restore
+
+      
+      - name: Push package to NuGet
+        run: dotnet nuget push **\*.nupkg
+             --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
+             --source https://api.nuget.org/v3/index.json
