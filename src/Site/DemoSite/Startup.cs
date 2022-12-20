@@ -3,16 +3,11 @@ namespace DemoSite;
 using Backoffice;
 using DemoSite.Controllers.Search;
 using DemoSite.Services;
-using Examine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
-using Microsoft.FeatureManagement.FeatureFilters;
 using Our.FeatureFlags.Filters.UmbracoBackOfficeUser;
 using Our.FeatureFlags.Filters.UmbracoDomain;
-using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.PublishedCache;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Umbraco.Cms.Core.Notifications;
 
 public class Startup

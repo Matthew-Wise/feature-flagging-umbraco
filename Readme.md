@@ -23,3 +23,8 @@ Properties work with Models builder as if there were not feature flagged.
 Uses the base property value converter method of checking this, as I am unable to get the correct converter on this request. 
 
 I would suggest never using HasValue and instead null check etc the strongly type value.
+
+
+
+## Attribution
+The logo for Our.FeatureFlags - [Toggle icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/toggle)
