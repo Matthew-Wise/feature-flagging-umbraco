@@ -3,6 +3,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ContentTargetFolders>.</ContentTargetFolders>
     <Product>Our.FeatureFlags</Product>
     <PackageId>Our.FeatureFlags</PackageId>
@@ -15,8 +17,8 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/Matthew-Wise/feature-flagging-umbraco/images/icon.png</PackageIconUrl>
-    <PackageReadmeFile>Readme.md</PackageReadmeFile>    
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +29,10 @@
 
   <ItemGroup>
     <None Include="..\..\Readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\images\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
