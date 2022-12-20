@@ -1,0 +1,95 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SearchViewModel>
+
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@using DemoSite.Models.ViewModels;
+@inject IFeatureManager FeatureManager
+
+@{
+    Layout = "master.cshtml";
+    
+    var showImages = await FeatureManager.IsEnabledAsync(Features.SearchImages);
+    if (showImages)
+    {
+        SmidgeHelper.RequiresCss("~/clean-assets/css/search-images.css");
+    }
+}
+@(await Component.InvokeAsync<PageHeaderComponent>(Model))
+
+<div class="container">
+    <form action="@Model.Url()" method="GET" id="search">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="form-group controls">
+                    <input type="text" class="form-control col-xs-6" placeholder="@Umbraco.GetDictionaryValue("Search.Placeholder")" name="q" value="@Model.SearchQuery" />
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-10 mx-auto my-3">
+                <div class="form-group">
+                    <button class="btn btn-primary search-button float-end">@Umbraco.GetDictionaryValue("Search.SearchButton") <i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-10 mx-auto">
+                
+                @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+                {
+                    @Html.Raw(string.Format(Umbraco.GetDictionaryValue("Search.Results", "We found {0} results when searching for {1}")!, Model.Results?.TotalRecords ?? 0, Model.SearchQuery))
+                    <p>Searched using: @Model.SearchServiceName</p>
+                    if (Model.Results is { TotalRecords: > 0, Content: { } })
+                    {
+                        foreach (var result in Model.Results.Content)
+                        {
+                            <div class="post-preview @(showImages ? "with-images" : null)">
+                                <feature requirement="Any" name="@nameof(Features.SearchImages)">
+                                    @{
+                                        var image = result.Content.Value<Image>("mainImage");
+                                        if (image != null)
+                                        {
+                                            <a href="@result.Content.Url()">
+                                                <img src="@image.GetCropUrl(150, 150)" alt=""/>
+                                            </a>
+                                        }
+                                    }
+                                </feature>
+                                <div>
+                                    <a href="@result.Content.Url()">
+
+                                        <h2 class="post-title">
+                                            @(result.Content.HasProperty("title") && result.Content.HasValue("title") && !string.IsNullOrWhiteSpace(result.Content.Value<string>("title")) ? result.Content.Value("title") : result.Content.Name)
+                                        </h2>
+                                        @if (result.Content.HasProperty("subtitle") && result.Content.HasValue("subtitle") && !string.IsNullOrWhiteSpace(result.Content.Value<string>("subtitle")))
+                                        {
+                                            <h3 class="post-subtitle">@(result.Content.Value<string>("subtitle"))</h3>
+                                        }
+                                    </a>
+                                    @if (result.Content.HasProperty("authorName") && result.Content.HasValue("authorName") && !string.IsNullOrWhiteSpace(result.Content.Value<string>("authorName"))
+                                         || (result.Content.HasProperty("articleDate") && result.Content.HasValue("articleDate") && result.Content.Value<DateTime>("articleDate") > DateTime.MinValue))
+                                    {
+                                        <p class="post-meta">
+                                            @Umbraco.GetDictionaryValue("Article.Posted")
+                                            @if (result.Content.HasProperty("authorName") && result.Content.HasValue("authorName") && !string.IsNullOrWhiteSpace(result.Content.Value<string>("authorName")))
+                                            {
+                                                @Umbraco.GetDictionaryValue("Article.By")
+
+                                                @Html.Raw("&nbsp;")
+
+                                                @(result.Content.Value<string>("authorName"))
+                                            }
+
+                                            @if (result.Content.HasProperty("articleDate") && result.Content.HasValue("articleDate") && result.Content.Value<DateTime>("articleDate") > DateTime.MinValue)
+                                            {
+                                                @Umbraco.GetDictionaryValue("Article.On")
+
+                                                @:&nbsp;@(result.Content.Value<DateTime>("ArticleDate").ToString("MMMM dd, yyyy"))
+                                            }
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <hr>
+                    }
+                }
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+{
+    "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+    "AlternatePackageNames": [],
+    "AuthorDetails": {
+        "Name": "Matthew Wise",
+        "Description": "DotNet Dev and Umbraco MVP",
+        "Url": "https://github.com/Matthew-Wise/feature-flagging-umbraco/",
+        "ImageUrl": "https://github.com/Matthew-Wise.png",
+        "Contributors": [
+            {
+                "Name": "Lee Kelleher ",
+                "Url": "https://github.com/leekelleher"
+            }
+        ]
+    },
+    "Category": "Developer Tools",
+    "DocumentationUrl": "https://github.com/Matthew-Wise/feature-flagging-umbraco",
+    "LicenseTypes": [
+        "Free"
+    ],
+    "IssueTrackerUrl": "https://github.com/Matthew-Wise/feature-flagging-umbraco/issues",
+    "PackageType": "Package",
+    "Screenshots": [
+      {
+        "ImageUrl": "https://github.com/Matthew-Wise/feature-flagging-umbraco/images/data-type-settings.png",
+        "Caption": "Data Type prevalue settings"
+      }
+    ],
+    "VideoUrl": "https://www.youtube.com/watch?v=MI8ALGLo4Mg"
+}

@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
+﻿namespace Our.FeatureFlags.Extensions;
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.FeatureManagement;
 
-namespace Our.FeatureFlags.Extensions
+public static class FeatureManagerExtensions
 {
-    public static class FeatureManagerExtensions
+    public static async Task<IList<string>> GetEnabledFeatures(this IFeatureManager featureManager)
     {
-        public static async Task<IList<string>> GetEnabledFeatures(this IFeatureManager featureManager)
+        var enabledFeatures = new List<string>();
+
+        await foreach (var featureName in featureManager.GetFeatureNamesAsync())
         {
-            var enabledFeatures = new List<string>();
-
-            await foreach (var featureName in featureManager.GetFeatureNamesAsync())
+            if (await featureManager.IsEnabledAsync(featureName))
             {
-                if (await featureManager.IsEnabledAsync(featureName))
-                {
-                    enabledFeatures.Add(featureName);
-                }
+                enabledFeatures.Add(featureName);
             }
-
-            return enabledFeatures;
         }
+
+        return enabledFeatures;
     }
 }
