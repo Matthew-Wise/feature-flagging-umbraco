@@ -22,7 +22,7 @@
     "PackageType": "Package",
     "Screenshots": [
       {
-        "ImageUrl": "https://github.com/Matthew-Wise/feature-flagging-umbraco/images/data-type-settings.png",
+        "ImageUrl": "https://raw.githubusercontent.com/Matthew-Wise/feature-flagging-umbraco/main/images/data-type-settings.png",
         "Caption": "Data Type prevalue settings"
       }
     ],
