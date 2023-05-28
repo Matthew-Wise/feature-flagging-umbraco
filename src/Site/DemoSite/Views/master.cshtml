@@ -37,7 +37,7 @@
 @await Html.PartialAsync("~/Views/Partials/footer.cshtml", model: Model)
 
 
-@if (await FeatureManager.IsEnabledAsync(Features.BackOfficeUser))
+@if (await FeatureManager.IsEnabledAsync(nameof(FeatureFlags.BackOfficeUser)))
 {
     <a class="btn btn-primary"
        href="/umbraco#/content/content/edit/@Model.Id?mculture=@CultureInfo.CurrentUICulture.Name" target="_blank" rel="nofollow noreferrer">

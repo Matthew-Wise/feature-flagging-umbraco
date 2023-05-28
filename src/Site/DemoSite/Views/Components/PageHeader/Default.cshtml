@@ -45,6 +45,7 @@
 <div>
     @{
         var features = await FeatureManager.GetEnabledFeatures();
-        <p >Enabled Features: @string.Join(",", features)</p>
+        <p>Enabled Features: @string.Join(" | ", features)</p>
+        @await Umbraco.RenderMacroAsync("LoginState")
     }
 </div>

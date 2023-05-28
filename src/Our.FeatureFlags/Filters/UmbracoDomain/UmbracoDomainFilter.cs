@@ -20,7 +20,9 @@ public sealed class UmbracoDomainFilter : IFeatureFilter
 		HttpContextAccessor = httpContextAccessor;
 	}
 
-	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
+
+	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context) => EvaluateAsync(context, default);
+	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context, CancellationToken cancellationToken = default)
 	{
 		
 		var settings = context.Parameters.Get<UmbracoDomainFilterSettings>();

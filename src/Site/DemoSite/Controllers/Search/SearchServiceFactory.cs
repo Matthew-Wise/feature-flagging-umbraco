@@ -6,11 +6,11 @@ using System;
 
 public class SearchServiceFactory : ISearchServiceFactory
 {
-	private readonly IFeatureManager _featureManager;
+	private readonly IFeatureManagerSnapshot _featureManager;
 
 	private readonly IServiceProvider _serviceProvider;
 
-	public SearchServiceFactory(IFeatureManager featureManager, IServiceProvider serviceProvider)
+	public SearchServiceFactory(IFeatureManagerSnapshot featureManager, IServiceProvider serviceProvider)
 	{
 		_featureManager = featureManager;
 		_serviceProvider = serviceProvider;
@@ -18,7 +18,7 @@ public class SearchServiceFactory : ISearchServiceFactory
 
 	public async Task<ISearchService> GetSearchService()
 	{
-		if (await _featureManager.IsEnabledAsync(Features.DanishSite))
+		if (await _featureManager.IsEnabledAsync(nameof(FeatureFlags.DanishSite)))
 		{
 			return _serviceProvider.GetRequiredService<ArticleSearchService>();
 		}

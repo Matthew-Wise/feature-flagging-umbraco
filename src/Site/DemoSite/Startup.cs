@@ -9,6 +9,11 @@ using Our.FeatureFlags.Filters.UmbracoBackOfficeUser;
 using Our.FeatureFlags.Filters.UmbracoDomain;
 using Microsoft.Extensions.Configuration;
 using Umbraco.Cms.Core.Notifications;
+using DemoSite.NotificationHandlers;
+using Microsoft.FeatureManagement.FeatureFilters;
+using DemoSite.FeatureManagement.SendingContentNotification.Filters;
+using DemoSite.FeatureManagement.Targeting;
+using DemoSite.FeatureManagement;
 
 public class Startup
 {
@@ -48,13 +53,20 @@ public class Startup
 			.AddBackOffice()
 			.AddWebsite()
 			.AddComposers()
-			.AddNotificationHandler<SendingAllowedChildrenNotification, MenuRenderingNotificationHandler>()
-			.Build();		
+			.AddNotificationAsyncHandler<SendingAllowedChildrenNotification, MenuRenderingNotificationHandler>()
+			.AddNotificationAsyncHandler<SendingContentNotification, ContentSendingNotificationHandler>()
+			.Build();
+
+
+		services.AddSingleton<ITargetingContextAccessor, UmbracoMemberTargetingContextAccessor>();
 
 		services.AddFeatureManagement()
+			.AddFeatureFilter<SendingContentNotificationFilter>()
 			.AddFeatureFilter<UmbracoBackOfficeUserFilter>()
-			.AddFeatureFilter<UmbracoDomainFilter>();
-
+			.AddFeatureFilter<UmbracoDomainFilter>()
+			.AddFeatureFilter<PercentageFilter>()
+			.AddFeatureFilter<TargetingFilter>();
+			//.UseDisabledFeaturesHandler(new DisabledFeaturesHandler());
 
 		services.AddScoped<ArticleSearchService>();
 		services.AddScoped<SearchService>();

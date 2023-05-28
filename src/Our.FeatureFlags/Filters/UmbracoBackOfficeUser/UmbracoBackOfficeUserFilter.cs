@@ -20,10 +20,13 @@ public sealed class UmbracoBackOfficeUserFilter : IFeatureFilter
     public UmbracoBackOfficeUserFilter(IHttpContextAccessor httpContextAccessor, IServiceProvider serviceProvider)
     {
         _httpContextAccessor = httpContextAccessor;
-        this._serviceProvider = serviceProvider;
+        _serviceProvider = serviceProvider;
     }
 
-    public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context)
+	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context) => EvaluateAsync(context, default);
+
+
+	public Task<bool> EvaluateAsync(FeatureFilterEvaluationContext context, CancellationToken cancellationToken = default)
     {
         // We are a singleton but we need scoped information
         using IServiceScope scope = _serviceProvider.CreateScope();
@@ -54,7 +57,7 @@ public sealed class UmbracoBackOfficeUserFilter : IFeatureFilter
     }
 
     /// <summary>
-    /// Gets the backoffice user from the cookie
+    /// Gets the backOffice user from the cookie
     /// https://our.umbraco.com/forum/umbraco-9/106857-how-do-i-determine-if-a-backoffice-user-is-logged-in-from-a-razor-view#comment-334423
     /// </summary>
     private ClaimsIdentity? BackofficeUser(IOptionsSnapshot<CookieAuthenticationOptions>? cookieOptionsSnapshot)

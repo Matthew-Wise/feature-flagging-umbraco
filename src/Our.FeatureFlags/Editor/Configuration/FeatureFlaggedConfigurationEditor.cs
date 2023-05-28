@@ -1,6 +1,7 @@
 ﻿namespace Our.FeatureFlags.Editor.Configuration;
 
 using Microsoft.FeatureManagement;
+using Our.FeatureFlags.Extensions;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;

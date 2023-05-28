@@ -7,7 +7,7 @@
 @{
     Layout = "master.cshtml";
     
-    var showImages = await FeatureManager.IsEnabledAsync(Features.SearchImages);
+    var showImages = await FeatureManager.IsEnabledAsync(nameof(FeatureFlags.SearchImages));
     if (showImages)
     {
         SmidgeHelper.RequiresCss("~/clean-assets/css/search-images.css");
@@ -39,7 +39,7 @@
                         foreach (var result in Model.Results.Content)
                         {
                             <div class="post-preview @(showImages ? "with-images" : null)">
-                                <feature requirement="Any" name="@nameof(Features.SearchImages)">
+                                <feature requirement="Any" name="@nameof(FeatureFlags.SearchImages)">
                                     @{
                                         var image = result.Content.Value<Image>("mainImage");
                                         if (image != null)
