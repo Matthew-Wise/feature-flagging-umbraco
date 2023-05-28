@@ -1,0 +1,10 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.MemberLogin>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "master";
+}
+@(await Component.InvokeAsync<PageHeaderComponent>(Model))
+
+
+	@await Umbraco.RenderMacroAsync("MemberLogin")
