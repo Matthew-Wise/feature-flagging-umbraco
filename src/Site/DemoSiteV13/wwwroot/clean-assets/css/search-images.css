@@ -1,0 +1,9 @@
+﻿.post-preview.with-images {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}
+
+.post-preview.with-images img{
+    margin:0 5px;
+}

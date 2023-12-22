@@ -8,6 +8,7 @@ using Our.FeatureFlags.Editor;
 using Our.FeatureFlags.Editor.Configuration;
 using Our.FeatureFlags.Extensions;
 using Umbraco.Cms.Core.Events;
+using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Extensions;
 
@@ -26,20 +27,22 @@ public class FeatureContentSendingNotificationHandler : INotificationAsyncHandle
 
         foreach (var variant in notification.Content.Variants)
         {
+			var tabsWithNoProperties = new List<Tab<ContentPropertyDisplay>>();
             foreach (var tab in variant.Tabs)
             {
-                if(tab.Properties == null)
+                if(tab.Properties == null || !tab.Properties.Any())
                 {
+					tabsWithNoProperties.Add(tab);
                     continue;
                 }
 
                 tab.Properties = tab.Properties.Where(prop =>
                 {
                     if (prop.PropertyEditor?.Alias.InvariantEquals(FeatureFlaggedEditor.AliasValue) == true &&
-                        prop.Config?.TryGetValue("__ffconfig", out var tmp) == true &&
+                        prop.ConfigNullable?.TryGetValue("__ffconfig", out var tmp) == true &&
                         tmp is FeatureFlaggedConfiguration config)
                     {
-                        prop.Config.Remove("__ffconfig");
+                        prop.ConfigNullable.Remove("__ffconfig");
 
                         var enabled = config.Requirement switch
                         {
@@ -63,6 +66,21 @@ public class FeatureContentSendingNotificationHandler : INotificationAsyncHandle
                     tab.Type = string.Empty;
                 }
             }
+
+			foreach(var tab in tabsWithNoProperties)
+			{
+				if (string.IsNullOrWhiteSpace(tab.Alias))
+				{
+					continue;
+				}
+
+				var groups = variant.Tabs.Where(t => t.Alias?.StartsWith(tab.Alias) == true && tab.Type != "tab");
+				if(groups.All(g => string.IsNullOrWhiteSpace(g.Type)))
+				{
+					tab.Type = string.Empty;
+				}
+			}
+			
         }
     }
 }
