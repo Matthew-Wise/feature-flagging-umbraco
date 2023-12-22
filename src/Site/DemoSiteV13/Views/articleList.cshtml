@@ -1,0 +1,10 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ArticleList>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+
+@{
+    Layout = "master.cshtml";
+}
+
+@(await Component.InvokeAsync<PageHeaderComponent>(Model))
+
+@await Html.PartialAsync("~/Views/Partials/latestArticles.cshtml")
